@@ -142,20 +142,6 @@ int startup(void)
 	g_win = make_unique<GameWindow>(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_X, WINDOW_Y);
 	renderer = g_win->getRenderer();
 
-#if 0
-	window = SDL_CreateWindow("UltraTimer", WINDOW_X, WINDOW_Y, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
-	if (window == nullptr){
-		std::cout << SDL_GetError() << std::endl;
-		return 1;
-	}
-
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (renderer == nullptr){
-		std::cout << SDL_GetError() << std::endl;
-		return 1;
-	}
-#endif
-
 	if (init_ttf() != 0) {
 		return 1;
 	}

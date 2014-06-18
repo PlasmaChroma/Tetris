@@ -3,6 +3,7 @@
 #include <string>
 #include "windowEvents.h"
 #include "text.h"
+#include "Tetris.h"
 
 using namespace std;
 
@@ -30,6 +31,7 @@ GameWindow::~GameWindow(void)
 
 int GameWindow::eventLoop(void)
 {
+	Tetris game(10, 22, 1);
 	// game code eventually goes here
 	while (1) {
 		SDL_GetMouseState(&mouseX, &mouseY);

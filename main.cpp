@@ -10,6 +10,7 @@
 #include "icon.h"
 #include "windowEvents.h"
 #include "GameWindow.h"
+#include "hrtime.h"
 
 using namespace std;
 
@@ -56,10 +57,13 @@ string getFontPath(string fontName)
 
 int main(int argc, char ** argv)
 {
+	hrtime::init();
+	hrtime::setTimer(APP_START);
+
 	if (startup() != 0) {
 		return 1;
 	} else {
-		cout << "Startup OK." << endl;
+		cout << "Startup OK. (" << hrtime::elapsed() << ")" << endl;
 	}
 
 	if (g_win->eventLoop() != 0) {

@@ -1,6 +1,6 @@
 #include "Tetris.h"
-#include <ctime>
 #include <iostream>
+#include "hrtime.h"
 
 using namespace std;
 
@@ -25,9 +25,11 @@ void Tetris::init(int width, int height, int mode)
 	/* create field of desired size */
 	m_field.resize(m_width * m_height, 0);
 
-	time_t seedTime = time(nullptr);
-	printf("seed time: %lu\n", seedTime);
-	m_rd.seed((unsigned long)seedTime);
+	cout << "Twister seed: " << hrtime::getTimer("now", timer_micro) << endl;
+	cout << "Elapsed: " << hrtime::elapsed() << endl;
+	hrtime::setTimer("appStartup");
+
+	m_rd.seed((unsigned long)hrtime::getTimer("now", timer_micro));
 
 	m_lines = 0;
 	m_points = 0;

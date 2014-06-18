@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <random>
+#include <array>
 
 #define TETRIMINOS_MAX 7
 
@@ -20,6 +21,7 @@ class Tetris
 public:
 	Tetris(int width, int height, int mode);
 	~Tetris(void);
+	void init(int width, int height, int mode);
 protected:
 	std::mt19937 m_rd; /* random number gen */
 private:
@@ -28,4 +30,9 @@ private:
 	int m_height;
 	int m_mode;
 	std::vector<int> m_field;
+
+	int m_lines;
+	int m_points;
+	int m_level;
+	std::array<int, TETRIMINOS_MAX> m_pieceStats;
 };

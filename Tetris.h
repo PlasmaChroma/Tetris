@@ -5,6 +5,8 @@
 #include <array>
 
 #define TETRIMINOS_MAX 7
+#define TETRIS_STD_WIDTH 10
+#define TETRIS_STD_HEIGHT 22
 
 enum tetriminos {
 	tm_block = 1,

@@ -31,7 +31,7 @@ GameWindow::~GameWindow(void)
 
 int GameWindow::eventLoop(void)
 {
-	Tetris game(10, 22, 1);
+	Tetris game(TETRIS_STD_WIDTH, TETRIS_STD_HEIGHT, 1);
 	// game code eventually goes here
 	while (1) {
 		SDL_GetMouseState(&mouseX, &mouseY);

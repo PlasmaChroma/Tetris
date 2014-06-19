@@ -1,6 +1,8 @@
 #include "Tetris.h"
 #include <iostream>
+#include <SDL_image.h>
 #include "hrtime.h"
+#include "global.h"
 
 using namespace std;
 
@@ -12,6 +14,19 @@ int Tetris::getRandTetrimino(void)
 Tetris::Tetris(int width, int height, int mode)
 {
 	init(width, height, mode);
+
+	/* load the background texture */
+	m_bgtex = nullptr;
+	m_bgtex = IMG_LoadTexture(renderer, "assets/blank_typea_crop.png");
+	if (m_bgtex == nullptr) {
+		throw std::runtime_error("Failed to load background image: " + string(IMG_GetError()));
+	}
+	//SDL_QueryTexture(m_bgtex, NULL, NULL, &width, &height);
+}
+
+Tetris::~Tetris(void)
+{
+	SDL_DestroyTexture(m_bgtex);
 }
 
 void Tetris::init(int width, int height, int mode)
@@ -37,7 +52,42 @@ void Tetris::init(int width, int height, int mode)
 	m_pieceStats.fill(0);
 }
 
-Tetris::~Tetris(void)
+void Tetris::draw(void)
 {
+	drawBackground();
+}
 
+void Tetris::drawBackground(void)
+{
+	SDL_Rect src, dst;
+
+	/* grab entire source from origin */
+	src.x = 0;
+	src.y = 0;
+	SDL_QueryTexture(m_bgtex, NULL, NULL, &src.w, &src.h);
+
+	/* we want to fill the entire window */
+	dst.x = 0;
+	dst.y = 0;
+	dst.w = g_windowWidth;
+	dst.h = g_windowHeight;
+
+	SDL_RenderCopy(renderer, m_bgtex, &src, &dst);
+}
+
+SDL_Rect Tetris::calculateField(void)
+{
+	/* use captured measurements */
+	double x_percent_start = 724 / 1920;
+	double x_percent_end = 1326 / 1920;
+	double y_percent_start = 191 / 1017;
+	double y_percent_end = 878 / 1017;
+
+	SDL_Rect ret;
+	ret.x = (int)(x_percent_start * m_width);
+	ret.w = (int)((x_percent_end * m_width) - ret.x);
+	ret.y = (int)(y_percent_start * m_height);
+	ret.h = (int)((y_percent_end * m_height) - ret.y);
+
+	return ret;
 }

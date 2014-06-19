@@ -17,12 +17,14 @@ using namespace std;
 SDL_Renderer* renderer = nullptr;
 unique_ptr<GameWindow> g_win;
 
-int WINDOW_X = 50;
-int WINDOW_Y = 50;
-int WINDOW_HEIGHT = 768;
-int WINDOW_WIDTH = 1024;
+const int WINDOW_X = 50;
+const int WINDOW_Y = 50;
+//int WINDOW_HEIGHT = 768;
+//int WINDOW_WIDTH = 1024;
+int g_windowWidth = 1024;
+int g_windowHeight = 768;
 
-int CONSOLE_X = WINDOW_X + WINDOW_WIDTH + 50;
+int CONSOLE_X = WINDOW_X + g_windowWidth + 50;
 int CONSOLE_Y = 50;
 int CONSOLE_HEIGHT = 480;
 int CONSOLE_WIDTH = 780;
@@ -76,64 +78,6 @@ int main(int argc, char ** argv)
 	return 0;
 }
 
-int eventLoop(void)
-{
-	icon plusIco(5, 5, "assets/edit-add-2.png", nullptr);
-
-	// game code eventually goes here
-	while (1) {
-		SDL_GetMouseState(&mouseX, &mouseY);
-		plusIco.checkMouse(mouseX, mouseY);
-
-		// event handling
-		SDL_Event e;
-		if (SDL_PollEvent(&e)) {
-			PrintEvent(&e);
-			if (e.type == SDL_QUIT)
-				break;
-			else if (e.type == SDL_KEYUP && e.key.keysym.sym == SDLK_ESCAPE)
-				break;
-		}
-
-		// clear the screen
-		SDL_RenderClear(renderer);
-
-		try {
-			plusIco.drawSelf();
-		}
-		catch (const std::runtime_error &e) {
-			std::cout << e.what() << std::endl;
-			return 4;
-		}
-		
-		/* draw some text on screen */
-		SDL_Texture *image = nullptr;
-		try {
-			SDL_Color color = { 255, 255, 255 };
-			//string myFont = getFontPath("comic.ttf");
-			string myFont = "assets/PressStart2P.ttf";
-			string myText = " X: " + to_string(mouseX) + " Y: " + to_string(mouseY);
-			image = RenderText(myText, myFont, color, 12);
-		}
-		catch (const std::runtime_error &e) {
-			std::cout << e.what() << std::endl;
-			return 4;
-		}
-
-		ConstrainedPrint(10, WINDOW_HEIGHT - 20, image, renderer, 400);
-
-		// flip the backbuffer
-		SDL_RenderPresent(renderer);
-
-		SDL_DestroyTexture(image);
-
-		//SDL_DestroyTexture(plus);
-
-	}
-
-	return 0;
-}
-
 int startup(void)
 {
 	resizeConsole();
@@ -143,7 +87,7 @@ int startup(void)
 		return 1;
 	}
 
-	g_win = make_unique<GameWindow>(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_X, WINDOW_Y);
+	g_win = make_unique<GameWindow>(g_windowWidth, g_windowHeight, WINDOW_X, WINDOW_Y);
 	renderer = g_win->getRenderer();
 
 	if (init_ttf() != 0) {

@@ -5,6 +5,7 @@
 #include "text.h"
 #include "Tetris.h"
 #include "hrtime.h"
+#include "global.h"
 
 using namespace std;
 
@@ -13,7 +14,7 @@ GameWindow::GameWindow(int w, int h, int x, int y)
   m_window(nullptr), m_renderer(nullptr),
   mouseX(0), mouseY(0)
 {
-	m_window = SDL_CreateWindow("Tetris", m_x, m_y, m_width, m_height, SDL_WINDOW_SHOWN);
+	m_window = SDL_CreateWindow("Tetris", m_x, m_y, m_width, m_height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 	if (m_window == nullptr){
 		std::cout << SDL_GetError() << std::endl;
 	}
@@ -41,6 +42,7 @@ int GameWindow::eventLoop(void)
 		SDL_Event e;
 		if (SDL_PollEvent(&e)) {
 			PrintEvent(&e);
+			handleEvent(&e);
 			if (e.type == SDL_QUIT)
 				break;
 			else if (e.type == SDL_KEYUP && e.key.keysym.sym == SDLK_ESCAPE)
@@ -49,6 +51,9 @@ int GameWindow::eventLoop(void)
 
 		// clear the screen
 		SDL_RenderClear(m_renderer);
+		
+		/* do drawing from tetris instance */
+		game.draw();
 
 		/* draw some text on screen */
 		SDL_Texture *image = nullptr;
@@ -56,7 +61,8 @@ int GameWindow::eventLoop(void)
 			SDL_Color color = { 255, 255, 255 };
 			//string myFont = getFontPath("comic.ttf");
 			string myFont = "assets/PressStart2P.ttf";
-			string myText = " X: " + to_string(mouseX) + " Y: " + to_string(mouseY);
+			string myText = " X: " + to_string(mouseX) + " Y: " + to_string(mouseY)
+				+ " [" + to_string(m_width) + "," + to_string(m_height) + "]";
 			image = RenderText(myText, myFont, color, 12);
 		}
 		catch (const std::runtime_error &e) {
@@ -76,4 +82,20 @@ int GameWindow::eventLoop(void)
 	}
 
 	return 0;
+}
+
+void GameWindow::handleEvent(const SDL_Event * event)
+{
+	if (event->type == SDL_WINDOWEVENT) {
+		switch (event->window.event) {
+		case SDL_WINDOWEVENT_RESIZED:
+			g_windowWidth = event->window.data1;
+			g_windowHeight = event->window.data2;
+			m_width = g_windowWidth;
+			m_height = g_windowHeight;
+			break;
+		default:
+			break;
+		}
+	}
 }

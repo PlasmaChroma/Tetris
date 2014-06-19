@@ -13,6 +13,7 @@ protected:
 	SDL_Renderer* m_renderer = nullptr;
 	int mouseX, mouseY;
 private:
+	void handleEvent(const SDL_Event * event);
 	int m_width, m_height, m_x, m_y;
 
 };

@@ -3,6 +3,7 @@
 #include <vector>
 #include <random>
 #include <array>
+#include <SDL.h>
 
 #define TETRIMINOS_MAX 7
 #define TETRIS_STD_WIDTH 10
@@ -24,10 +25,14 @@ public:
 	Tetris(int width, int height, int mode);
 	~Tetris(void);
 	void init(int width, int height, int mode);
+	void draw(void);
+	void drawBackground(void);
 protected:
 	std::mt19937 m_rd; /* random number gen */
 private:
 	int getRandTetrimino(void);
+	SDL_Rect calculateField(void);
+
 	int m_width;
 	int m_height;
 	int m_mode;
@@ -37,4 +42,6 @@ private:
 	int m_points;
 	int m_level;
 	std::array<int, TETRIMINOS_MAX> m_pieceStats;
+
+	SDL_Texture* m_bgtex;
 };

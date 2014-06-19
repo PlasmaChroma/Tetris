@@ -37,6 +37,7 @@ private:
 	int m_height;
 	int m_mode;
 	std::vector<int> m_field;
+	std::vector<SDL_Rect> m_blockRects;
 
 	int m_lines;
 	int m_points;

@@ -32,6 +32,7 @@ protected:
 private:
 	int getRandTetrimino(void);
 	SDL_Rect calculateField(void);
+	void populateBlockRects(void);
 
 	int m_width;
 	int m_height;

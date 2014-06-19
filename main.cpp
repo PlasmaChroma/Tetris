@@ -115,15 +115,6 @@ void resizeConsole(void)
 	MoveWindow(wh, CONSOLE_X, CONSOLE_Y, CONSOLE_WIDTH, CONSOLE_HEIGHT, TRUE);
 }
 
-SDL_Texture* LoadImage(std::string file)
-{
-	SDL_Texture* tex = nullptr;
-	tex = IMG_LoadTexture(renderer, file.c_str());
-	if (tex == nullptr)
-		throw std::runtime_error("Failed to load image: " + file + IMG_GetError());
-	return tex;
-}
-
 void ImgDraw(int x, int y, SDL_Texture *tex, SDL_Renderer *rend)
 {
 	/* put this where we want */

@@ -6,6 +6,15 @@
 
 using namespace std;
 
+SDL_Texture* LoadImage(std::string file)
+{
+	SDL_Texture* tex = nullptr;
+	tex = IMG_LoadTexture(renderer, file.c_str());
+	if (tex == nullptr)
+		throw std::runtime_error("Failed to load image: " + file + IMG_GetError());
+	return tex;
+}
+
 int Tetris::getRandTetrimino(void)
 {
 	return (m_rd() % TETRIMINOS_MAX) + 1;
@@ -16,12 +25,8 @@ Tetris::Tetris(int width, int height, int mode)
 	init(width, height, mode);
 
 	/* load the background texture */
-	m_bgtex = nullptr;
-	m_bgtex = IMG_LoadTexture(renderer, "assets/blank_typea_crop.png");
-	if (m_bgtex == nullptr) {
-		throw std::runtime_error("Failed to load background image: " + string(IMG_GetError()));
-	}
-	//SDL_QueryTexture(m_bgtex, NULL, NULL, &width, &height);
+	m_bgtex = LoadImage("assets/blank_typea_crop.png");
+
 }
 
 Tetris::~Tetris(void)
@@ -90,4 +95,14 @@ SDL_Rect Tetris::calculateField(void)
 	ret.h = (int)((y_percent_end * m_height) - ret.y);
 
 	return ret;
+}
+
+void Tetris::populateBlockRects(void)
+{
+	SDL_Rect field = calculateField();
+
+	int blockWidth = field.w / TETRIS_STD_WIDTH;
+	int blockHeight = field.h / TETRIS_STD_HEIGHT;
+
+
 }

@@ -26,7 +26,7 @@ Tetris::Tetris(int width, int height, int mode)
 
 	/* load the background texture */
 	m_bgtex = LoadImage("assets/blank_typea_crop.png");
-	m_blueBlk = LoadImage("assets/DTblue.png");
+	m_blueBlk = LoadImage("assets/NinBlue.png");
 
 }
 
@@ -101,28 +101,13 @@ void Tetris::drawField(void)
 	}
 
 	SDL_Rect tmp = { 1, 1, 50, 50 };
-	SDL_RenderCopy(renderer, m_blueBlk, &src, &tmp);
+	//SDL_RenderCopy(renderer, m_blueBlk, &src, &tmp);
 }
 
 SDL_Rect Tetris::calculateField(void)
 {
-	/* use captured measurements */
-	double x_percent_start = 726.0 / 1920.0;
-	double x_percent_end = 1327.0 / 1920.0;
-	double y_percent_start = 191.0 / 1017.0;
-	double y_percent_end = 880.0 / 1017.0;
-
-	printf("xs: %g xe: %g ys: %g ye: %g \n", 
-		x_percent_start, x_percent_end, y_percent_start, y_percent_end);
-
-	printf("Window %d,%d\n", g_windowWidth, g_windowHeight);
-
-	SDL_Rect ret;
-	ret.x = (int)(x_percent_start * (double)g_windowWidth);
-	ret.w = (int)((x_percent_end * (double)g_windowWidth) - ret.x);
-	ret.y = (int)(y_percent_start * (double)g_windowHeight);
-	ret.h = (int)((y_percent_end * (double)g_windowHeight) - ret.y);
-
+	// x, y, width, height
+	SDL_Rect ret = { 726, 203, 601, 726 };
 	return ret;
 }
 
@@ -131,14 +116,14 @@ void Tetris::populateBlockRects(void)
 	SDL_Rect field = calculateField();
 	printf("Field dims: %d,%d,%d,%d\n", field.x, field.y, field.w, field.h);
 
-	float blockWidth = (float)field.w / TETRIS_STD_WIDTH;
-	float blockHeight = (float)field.h / TETRIS_STD_HEIGHT;
+	int blockWidth = (float)field.w / TETRIS_STD_WIDTH;
+	int blockHeight = (float)field.h / (TETRIS_STD_HEIGHT - 2); // the invisible buffer up top
 
-	float bX = field.x;
-	float bY = field.y + field.h - blockHeight;
+	int bX = field.x;
+	int bY = field.y + field.h - blockHeight;
 	int inRowCount = 0;
 
-	for (unsigned int i = 0; i < m_blockRects.size(); ++i) {
+	for (unsigned int i = 0; i < m_blockRects.size() - 20; ++i) {
 		m_blockRects[i] = SDL_Rect{ bX, bY, blockWidth, blockHeight };
 
 		if (i < 11)

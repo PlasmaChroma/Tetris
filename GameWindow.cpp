@@ -26,6 +26,11 @@ GameWindow::GameWindow(int w, int h, int x, int y)
 	if (m_renderer == nullptr){
 		std::cout << SDL_GetError() << std::endl;
 	}
+
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "best");  // make the scaled rendering look smoother.
+	SDL_RenderSetLogicalSize(m_renderer, 1920, 1080);
+	g_windowWidth = 1920;
+	g_windowHeight = 1080;
 }
 
 GameWindow::~GameWindow(void)
@@ -46,7 +51,7 @@ int GameWindow::eventLoop(void)
 		if (SDL_PollEvent(&e)) {
 			PrintEvent(&e);
 			int result = handleEvent(&e);
-			if (result == EVENT_WIN_RESIZED) { game.populateBlockRects(); }
+			//if (result == EVENT_WIN_RESIZED) { game.populateBlockRects(); }
 			if (result == EVENT_WIN_QUIT) { break; }
 		}
 
@@ -71,7 +76,7 @@ int GameWindow::eventLoop(void)
 			return 4;
 		}
 
-		ConstrainedPrint(10, m_height - 20, image, m_renderer, 400);
+		ConstrainedPrint(10, g_windowHeight - 20, image, m_renderer, 400);
 
 		// flip the backbuffer
 		SDL_RenderPresent(m_renderer);
@@ -90,10 +95,10 @@ int GameWindow::handleEvent(const SDL_Event * event)
 	if (event->type == SDL_WINDOWEVENT) {
 		switch (event->window.event) {
 		case SDL_WINDOWEVENT_RESIZED:
-			g_windowWidth = event->window.data1;
-			g_windowHeight = event->window.data2;
-			m_width = g_windowWidth;
-			m_height = g_windowHeight;
+			//g_windowWidth = event->window.data1;
+			//g_windowHeight = event->window.data2;
+			//m_width = g_windowWidth;
+			//m_height = g_windowHeight;
 			return EVENT_WIN_RESIZED;
 			break;
 		default:

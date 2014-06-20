@@ -21,8 +21,8 @@ const int WINDOW_X = 50;
 const int WINDOW_Y = 50;
 //int WINDOW_HEIGHT = 768;
 //int WINDOW_WIDTH = 1024;
-int g_windowWidth = 1024;
-int g_windowHeight = 768;
+int g_windowWidth = 1600;
+int g_windowHeight = 900;
 
 int CONSOLE_X = WINDOW_X + g_windowWidth + 50;
 int CONSOLE_Y = 50;

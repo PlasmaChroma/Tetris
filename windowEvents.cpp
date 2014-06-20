@@ -11,7 +11,7 @@ void PrintEvent(const SDL_Event * event)
 			SDL_Log("Window %d hidden", event->window.windowID);
 			break;
 		case SDL_WINDOWEVENT_EXPOSED:
-			SDL_Log("Window %d exposed", event->window.windowID);
+			//SDL_Log("Window %d exposed", event->window.windowID);
 			break;
 		case SDL_WINDOWEVENT_MOVED:
 			SDL_Log("Window %d moved to %d,%d",

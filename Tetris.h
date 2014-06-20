@@ -26,16 +26,17 @@ public:
 	~Tetris(void);
 	void init(int width, int height, int mode);
 	void draw(void);
-	void drawBackground(void);
+	void populateBlockRects(void); /* needs called after resize */
 protected:
 	std::mt19937 m_rd; /* random number gen */
 private:
 	int getRandTetrimino(void);
 	SDL_Rect calculateField(void);
-	void populateBlockRects(void);
+	void drawBackground(void);
+	void drawField(void);
 
-	int m_width;
-	int m_height;
+	int m_FieldWidth;
+	int m_FieldHeight;
 	int m_mode;
 	std::vector<int> m_field;
 	std::vector<SDL_Rect> m_blockRects;
@@ -46,4 +47,5 @@ private:
 	std::array<int, TETRIMINOS_MAX> m_pieceStats;
 
 	SDL_Texture* m_bgtex;
+	SDL_Texture* m_blueBlk;
 };

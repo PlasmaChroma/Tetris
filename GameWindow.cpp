@@ -9,6 +9,9 @@
 
 using namespace std;
 
+#define EVENT_WIN_RESIZED 1
+#define EVENT_WIN_QUIT 2
+
 GameWindow::GameWindow(int w, int h, int x, int y)
 : m_width(w), m_height(h), m_x(x), m_y(y),
   m_window(nullptr), m_renderer(nullptr),
@@ -42,11 +45,9 @@ int GameWindow::eventLoop(void)
 		SDL_Event e;
 		if (SDL_PollEvent(&e)) {
 			PrintEvent(&e);
-			handleEvent(&e);
-			if (e.type == SDL_QUIT)
-				break;
-			else if (e.type == SDL_KEYUP && e.key.keysym.sym == SDLK_ESCAPE)
-				break;
+			int result = handleEvent(&e);
+			if (result == EVENT_WIN_RESIZED) { game.populateBlockRects(); }
+			if (result == EVENT_WIN_QUIT) { break; }
 		}
 
 		// clear the screen
@@ -84,7 +85,7 @@ int GameWindow::eventLoop(void)
 	return 0;
 }
 
-void GameWindow::handleEvent(const SDL_Event * event)
+int GameWindow::handleEvent(const SDL_Event * event)
 {
 	if (event->type == SDL_WINDOWEVENT) {
 		switch (event->window.event) {
@@ -93,9 +94,17 @@ void GameWindow::handleEvent(const SDL_Event * event)
 			g_windowHeight = event->window.data2;
 			m_width = g_windowWidth;
 			m_height = g_windowHeight;
+			return EVENT_WIN_RESIZED;
 			break;
 		default:
 			break;
 		}
 	}
+
+	if (event->type == SDL_QUIT)
+		return EVENT_WIN_QUIT;
+	else if (event->type == SDL_KEYUP && event->key.keysym.sym == SDLK_ESCAPE)
+		return EVENT_WIN_QUIT;
+
+	return 0;
 }

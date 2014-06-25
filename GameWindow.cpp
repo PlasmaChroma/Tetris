@@ -28,9 +28,12 @@ GameWindow::GameWindow(int w, int h, int x, int y)
 	}
 
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "best");  // make the scaled rendering look smoother.
-	SDL_RenderSetLogicalSize(m_renderer, 1920, 1080);
+	//g_windowWidth = 3200;
+	//g_windowHeight = 1800;
 	g_windowWidth = 1920;
 	g_windowHeight = 1080;
+	SDL_RenderSetLogicalSize(m_renderer, g_windowWidth, g_windowHeight);
+
 }
 
 GameWindow::~GameWindow(void)
@@ -69,14 +72,14 @@ int GameWindow::eventLoop(void)
 			string myFont = "assets/PressStart2P.ttf";
 			string myText = " X: " + to_string(mouseX) + " Y: " + to_string(mouseY)
 				+ " [" + to_string(m_width) + "," + to_string(m_height) + "]";
-			image = RenderText(myText, myFont, color, 12);
+			image = RenderText(myText, myFont, color, 24);
 		}
 		catch (const std::runtime_error &e) {
 			std::cout << e.what() << std::endl;
 			return 4;
 		}
 
-		ConstrainedPrint(10, g_windowHeight - 20, image, m_renderer, 400);
+		ConstrainedPrint(10, g_windowHeight - 40, image, m_renderer, 800);
 
 		// flip the backbuffer
 		SDL_RenderPresent(m_renderer);

@@ -95,19 +95,22 @@ void Tetris::drawField(void)
 	src.y = 0;
 	SDL_QueryTexture(m_blueBlk, NULL, NULL, &src.w, &src.h);
 
-	for (unsigned int i = 0; i < m_blockRects.size(); ++i)
+	for (unsigned int i = 0; i < m_field.size(); ++i)
 	{
-		SDL_RenderCopy(renderer, m_blueBlk, &src, &m_blockRects[i]);
+		if (m_field[i] > 0) {
+			SDL_RenderCopy(renderer, m_blueBlk, &src, &m_blockRects[i]);
+		}
 	}
 
-	SDL_Rect tmp = { 1, 1, 50, 50 };
+	//SDL_Rect tmp = { 1, 1, 50, 50 };
 	//SDL_RenderCopy(renderer, m_blueBlk, &src, &tmp);
 }
 
 SDL_Rect Tetris::calculateField(void)
 {
 	// x, y, width, height
-	SDL_Rect ret = { 726, 203, 601, 726 };
+	SDL_Rect ret = { 726, 203, 601, 726 }; // 1080p
+	//SDL_Rect ret = { 1209, 338, 1001, 1209 }; // 1800
 	return ret;
 }
 
@@ -126,8 +129,8 @@ void Tetris::populateBlockRects(void)
 	for (unsigned int i = 0; i < m_blockRects.size() - 20; ++i) {
 		m_blockRects[i] = SDL_Rect{ bX, bY, blockWidth, blockHeight };
 
-		if (i < 11)
-		printf("%d set to %d,%d,%d,%d\n", i, bX, bY, blockWidth, blockHeight);
+		//if (i < 11)
+		//printf("%d set to %d,%d,%d,%d\n", i, bX, bY, blockWidth, blockHeight);
 
 		++inRowCount;
 

@@ -43,7 +43,7 @@ SDL_Texture* LoadImage(std::string file);
 void ImgDraw(int x, int y, SDL_Texture *tex, SDL_Renderer *rend);
 
 
-string getFontPath(string fontName)
+string getSystemFontPath(string fontName)
 {
 	char* pRoot;
 	_dupenv_s(&pRoot, &ENV_CHAR_MAX, "systemroot");
